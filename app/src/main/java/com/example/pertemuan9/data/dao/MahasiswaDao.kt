@@ -12,4 +12,7 @@ interface MahasiswaDao {
 
     @Query("SELECT * FROM mahasiswa ORDER BY nama ASC")
     fun getAllMahasiswa(): Flow<List<Mahasiswa>>
+
+    @Query("SELECT * FROM mahasiswa WHERE nim = :nim")
+    fun getMahasiswa(nim: String): Flow<Mahasiswa>
 }
