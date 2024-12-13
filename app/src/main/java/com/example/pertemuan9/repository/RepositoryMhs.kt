@@ -8,4 +8,6 @@ interface RepositoryMhs {
     fun getAlths(): Flow<List<Mahasiswa>>
 
     fun gechs(nim: String): Flow<Mahasiswa>
+
+    suspend fun deletths(mahasiswa: Mahasiswa)
 }
