@@ -6,4 +6,6 @@ interface RepositoryMhs {
     suspend fun inserths(mahasiswa: Mahasiswa)
 
     fun getAlths(): Flow<List<Mahasiswa>>
+
+    fun gechs(nim: String): Flow<Mahasiswa>
 }
