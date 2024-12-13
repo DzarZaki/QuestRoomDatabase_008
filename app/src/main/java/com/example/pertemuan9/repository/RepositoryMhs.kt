@@ -12,4 +12,6 @@ interface RepositoryMhs {
     fun gechs(nim: String): Flow<Mahasiswa>
 
     suspend fun deletths(mahasiswa: Mahasiswa)
+
+    suspend fun updatths(mahasiswa: Mahasiswa)
 }
