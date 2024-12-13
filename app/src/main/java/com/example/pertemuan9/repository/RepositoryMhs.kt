@@ -4,4 +4,6 @@ import com.example.pertemuan9.data.entity.Mahasiswa
 
 interface RepositoryMhs {
     suspend fun inserths(mahasiswa: Mahasiswa)
+
+    fun getAlths(): Flow<List<Mahasiswa>>
 }
