@@ -1,5 +1,6 @@
 package com.example.pertemuan9.ui.viewmodel
 
+import HomeMhsViewModel
 import android.text.Spannable.Factory
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.createSavedStateHandle
@@ -21,22 +22,3 @@ object PenyediaViewModel {
 fun CreationExtras.krsApp(): KrsApp =
     (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as KrsApp)
 
-initializer {
-    HomeMhsViewModel(
-        KrsApp().containerApp.repositoryMhs
-    )
-}
-
-initializer {
-    DetailMhsviewModel(
-        createSavedStateHandle(),
-        KrsApp().containerApp.repositoryMhs,
-    )
-}
-
-initializer {
-    UpdateMhsViewModel(
-        createSavedStateHandle(),
-        KrsApp().containerApp.repositoryMhs,
-    )
-}

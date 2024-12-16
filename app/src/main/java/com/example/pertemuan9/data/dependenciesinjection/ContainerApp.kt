@@ -3,7 +3,7 @@ package com.example.pertemuan9.data.dependenciesinjection
 import android.content.Context
 import com.example.pertemuan9.data.database.KrsDatabase
 import com.example.pertemuan9.repository.RepositoryMhs
-import com.example.pertemuan9.repository.localrepositoryMhs
+import com.example.pertemuan9.repository.LocalRepositoryMhs
 
 interface InterfaceContainerApp {
     val repositoryMhs: RepositoryMhs
@@ -11,6 +11,6 @@ interface InterfaceContainerApp {
 
 class ContainerApp(private val context:Context) : InterfaceContainerApp{
     override val repositoryMhs: RepositoryMhs by lazy {
-        localrepositoryMhs(KrsDatabase.getDatabase(context).mahasiswaDao())
+        LocalRepositoryMhs(KrsDatabase.getDatabase(context).mahasiswaDao())
     }
 }

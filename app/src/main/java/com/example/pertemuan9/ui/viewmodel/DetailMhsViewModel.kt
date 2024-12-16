@@ -38,15 +38,19 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pertemuan9.data.entity.Mahasiswa
 import com.example.pertemuan9.repository.RepositoryMhs
 import com.example.pertemuan9.ui.costumwidget.TopAppBar
+import com.example.pertemuan9.ui.navigation.AlamatNavigasi
 import com.example.pertemuan9.ui.navigation.DestinasiDetail
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
-class DetailMhsviewModel(
+class DetailMhsViewModel(
     savedStateHandle: SavedStateHandle,
     private val repositoryMhs: RepositoryMhs,
 ) : ViewModel() {
@@ -61,6 +65,10 @@ class DetailMhsviewModel(
             )
         }
         .onStart {
+            emit(DetailUiState(isLoading = true))
+            delay(600)
+        }
+        .catch {
             emit(
                 DetailUiState(
                     isLoading = false,
@@ -72,14 +80,17 @@ class DetailMhsviewModel(
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(2000),
-                isLoading =true,
-        ),
-}
+            initialValue = DetailUiState(
+                isLoading = true,
+            ),
+        )
 
-fun deleteMhs() {
-    detailUiState.value.detailUiEvent.toMahasiswaEntity().let {
-        viewModelScope.launch {
-            repositoryMhs.deleteMhs(it)
+    fun deleteMhs() {
+        val currentEvent = detailUiState.value.detailUiEvent
+        if (currentEvent != MahasiswaEvent()) { // Validasi agar tidak kosong
+            viewModelScope.launch {
+                repositoryMhs.deleteMhs(currentEvent.toMahasiswaEntity())
+            }
         }
     }
 }
@@ -88,208 +99,22 @@ data class DetailUiState(
     val detailUiEvent: MahasiswaEvent = MahasiswaEvent(),
     val isLoading: Boolean = false,
     val isError: Boolean = false,
-    val errorMessage: String =""
+    val errorMessage: String = "",
 ) {
     val isUiEventEmpty: Boolean
         get() = detailUiEvent == MahasiswaEvent()
-
     val isUiEventNotEmpty: Boolean
         get() = detailUiEvent != MahasiswaEvent()
-
 }
 
+// Memindahkan data dari entity ke UI
 fun Mahasiswa.toDetailUiEvent(): MahasiswaEvent {
     return MahasiswaEvent(
-        nim = nim,
         nama = nama,
+        nim = nim,
         jeniskelamin = jeniskelamin,
         alamat = alamat,
         kelas = kelas,
         angkatan = angkatan
     )
 }
-
-@Composable
-fun DetailMhsView(
-    modifier: Modifier = Modifier,
-    viewModel: DetailMhsviewModel = viewModel(factory = PenyediaViewModel.Factory),
-    onBack: () -> Unit = { },
-    onEditClick: (String) -> Unit = { },
-    onDeleteClick: () -> Unit = { }
-) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                judul = "Detail Mahasiswa",
-                showBackButton = true,
-                onBack = onBack,
-                modifier = modifier
-            )
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    onEditClick(viewModel.detailUiState.value.detailUiEvent.nim)
-                },
-                shape = MaterialTheme.shapes.medium,
-                modifier = Modifier.padding(16.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Edit,
-                    contentDescription = "Edit Mahasiswa",
-                )
-            }
-        }
-    ) { innerPadding ->
-        val detailUiState by viewModel.detailUiState.collectAsState()
-
-        BodyDetailMhs(
-            modifier = Modifier.padding(innerPadding),
-            detailUiState = detailUiState,
-            onDeleteClick = {
-                viewModel.deletemhs()
-                onDeleteClick()
-            }
-        )
-    }
-}
-
-@Composable
-fun BodyDetailMhs(
-    modifier: Modifier = Modifier,
-    detailUiState: DetailUiState = DetailUiState(),
-    onDeleteClick: () -> Unit = { }
-) {
-    var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
-    when {
-        detailUiState.isLoading -> {
-            Box(
-                modifier = modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator() // Tampilkan loading
-            }
-        }
-
-        detailUiState.isUiEventNotEmpty -> {
-            Column(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-                ItemDetailMhs(
-                    mahasiswa = detailUiState.detailUiEvent.toMahasiswaEntity(),
-                    modifier = Modifier
-                )
-                Spacer(modifier = Modifier.padding(8.dp))
-                Button(
-                    onClick = {
-                        deleteConfirmationRequired = true
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(text = "Delete")
-                }
-
-                if (deleteConfirmationRequired) {
-                    DeleteConfirmationDialog(
-                        onDeleteConfirm = {
-                            deleteConfirmationRequired = false
-                            onDeleteClick()
-                        },
-                        onDeleteCancel = { deleteConfirmationRequired = false },
-                        modifier = Modifier.padding(8.dp)
-                    )
-                }
-            }
-        }
-
-        detailUiState.isUiEventEmpty -> {
-            Box(
-                modifier = modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "Data tidak ditemukan",
-                    modifier = Modifier.padding(16.dp)
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun ItemDetailMhs(
-    modifier: Modifier = Modifier,
-    mahasiswa: Mahasiswa
-) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-        )
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            ComponentDetailMhs(judul = "NIM", isinya = mahasiswa.nim)
-            Spacer(modifier = Modifier.padding(4.dp))
-
-            ComponentDetailMhs(judul = "Nama", isinya = mahasiswa.nama)
-            Spacer(modifier = Modifier.padding(4.dp))
-            ComponentDetailMhs(judul = "Alamat", isinya = mahasiswa.alamat)
-            Spacer(modifier = Modifier.padding(4.dp))
-            ComponentDetailMhs(judul = "Jenis Kelamin", isinya = mahasiswa.jeniskelamin)
-            Spacer(modifier = Modifier.padding(4.dp))
-            ComponentDetailMhs(judul = "Kelas", isinya = mahasiswa.kelas)
-            Spacer(modifier = Modifier.padding(4.dp))
-            ComponentDetailMhs(judul = "Angkatan", isinya = mahasiswa.angkatan)
-        }
-    }
-}
-
-@Composable
-fun ComponentDetailMhs(
-    modifier: Modifier = Modifier,
-    judul: String,
-    isinya: String
-) {
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.Start
-    ) {
-        Text(
-            text = "$judul : ",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.Gray
-        )
-        Text(
-            text = isinya, fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-        )
-    }
-}
-
-@Composable
-private fun DeleteConfirmationDialog(
-    onDeleteConfirm: () -> Unit, onDeleteCancel: () -> Unit, modifier: Modifier = Modifier
-) {
-    AlertDialog(onDismissRequest = { /* Do nothing */ },
-        title = { Text("Delete Data") },
-        text = { Text("Apakah anda yakin ingin menghapus data?") },
-        modifier = modifier,
-        dismissButton = {
-            TextButton(onClick = onDeleteCancel) {
-                Text(text = "Cancel")
-            }
-        },
-        confirmButton = {
-            TextButton(onClick = onDeleteConfirm) {
-                Text(text = "Yes")
-            }
-        })
-}
-
