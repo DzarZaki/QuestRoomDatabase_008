@@ -63,7 +63,7 @@ class UpdateMhsViewModel(
         val errorState = FormErrorState(
             nim = if (event.nim.isNotEmpty()) null else "NIM tidak boleh kosong",
             nama = if (event.nama.isNotEmpty()) null else "Nama tidak boleh kosong",
-            jeniskelamin = if (event.jeniskelamin.isNotEmpty()) null else "Jenis kelamin tidak boleh kosong",
+            jenisKelamin = if (event.jenisKelamin.isNotEmpty()) null else "Jenis kelamin tidak boleh kosong",
             alamat = if (event.alamat.isNotEmpty()) null else "Alamat tidak boleh kosong",
             kelas = if (event.kelas.isNotEmpty()) null else "kelas tidak boleh kosong",
             angkatan = if (event.angkatan.isNotEmpty()) null else "Angkatan tidak boleh kosong",
@@ -81,26 +81,26 @@ class UpdateMhsViewModel(
                 try {
                     repositoryMhs.updateMhs(currentEvent.toMahasiswaEntity())
                     updateUIState = updateUIState.copy(
-                        snackBarMessage = "Data berhasil diupdate",
+                        snackBarMassage = "Data berhasil diupdate",
                         mahasiswaEvent = MahasiswaEvent(),
                         isEntryValid = FormErrorState()
                     )
                     println("snackBarMessage diatur: ${updateUIState.
-                            snackBarMessage}")
+                            snackBarMassage}")
                 } catch (e: Exception) {
                     updateUIState = updateUIState.copy(
-                        snackBarMessage = "Data gagal diupdate"
+                        snackBarMassage = "Data gagal diupdate"
                     )
                 }
             }
         }else {
             updateUIState = updateUIState.copy(
-                snackBarMessage = "Data gagal diupdate"
+                snackBarMassage = "Data gagal diupdate"
             )
         }
     }
     fun resetSnackBarMessage() {
-        updateUIState = updateUIState.copy(snackBarMessage = null)
+        updateUIState = updateUIState.copy(snackBarMassage = null)
     }
 }
 
@@ -120,9 +120,9 @@ fun UpdateMhsView(
     val coroutineScope = rememberCoroutineScope()
 
     // Observasi perubahan snackbarMessage
-    LaunchedEffect(uiState.snackBarMessage) {
+    LaunchedEffect(uiState.snackBarMassage) {
         println("launchedEffect triggered")
-        uiState.snackBarMessage?.let { message ->
+        uiState.snackBarMassage?.let { message ->
             println("Snackbar message received: $message")
             coroutineScope.launch {
                 println("Launching coroutine for snackbar")
