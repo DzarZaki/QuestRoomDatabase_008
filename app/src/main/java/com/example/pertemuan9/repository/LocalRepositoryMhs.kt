@@ -4,8 +4,7 @@ import com.example.pertemuan9.data.dao.MahasiswaDao
 import com.example.pertemuan9.data.entity.Mahasiswa
 import kotlinx.coroutines.flow.Flow
 
-
-abstract class LocalRepositoryMhs(
+class LocalRepositoryMhs (
     private val mahasiswaDao: MahasiswaDao
 ) : RepositoryMhs{
     override suspend fun insertMhs(mahasiswa: Mahasiswa) {
