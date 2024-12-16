@@ -51,8 +51,8 @@ fun InsertMhsView(
     val coroutineScope = rememberCoroutineScope()
 
     // Observasi perubahan snackbarMessage
-    LaunchedEffect(uiState.snackBarMessage) {
-        uiState.snackBarMessage?.let { message ->
+    LaunchedEffect(uiState.snackBarMassage) {
+        uiState.snackBarMassage?.let { message ->
             coroutineScope.launch {
                 snackBarHostState.showSnackbar(message) // Tampilkan Snackbar
                 viewModel.resetSnackBarMessage()
@@ -179,9 +179,9 @@ fun FormMahasiswa(
                     horizontalArrangement = Arrangement.Start
                 ){
                     RadioButton(
-                        selected = mahasiswaEvent.jeniskelamin == jk,
+                        selected = mahasiswaEvent.jenisKelamin == jk,
                         onClick = {
-                            onValueChange(mahasiswaEvent.copy(jeniskelamin = jk))
+                            onValueChange(mahasiswaEvent.copy(jenisKelamin = jk))
                         }
                     )
                     Text(
@@ -191,7 +191,7 @@ fun FormMahasiswa(
             }
         }
         Text(
-            text = errorState.jeniskelamin ?: "",
+            text = errorState.jenisKelamin ?: "",
             color = Color.Red
         )
 
