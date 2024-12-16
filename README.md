@@ -1,4 +1,4 @@
-1. Datare Mahasiswa
+1. Data Mahasiswa
 ![Daftar Mahasiswa](https://github.com/user-attachments/assets/c37594cb-48c3-4139-a504-92f34cd7ead9)
 
 2. Tambah Data Mahasiswa
