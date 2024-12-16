@@ -75,3 +75,4 @@ fun Mahasiswa.toDetailUiEvent(): MahasiswaEvent {
         angkatan = angkatan
     )
 }
+
