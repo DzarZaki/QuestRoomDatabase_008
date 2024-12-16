@@ -14,20 +14,10 @@
 ![Delete Data Mahasiswa](https://github.com/user-attachments/assets/559b6da1-3a28-4a04-8721-bf6f3d9cfe78)
 6. Data berhasil di Delete
 ![Data berhasil di Delete](https://github.com/user-attachments/assets/7fc8dd2b-00b8-4e03-b26f-30585050ab0a)
-7. Edit Nama Mahasiswa
-![Edit Nama Mahasiswa](https://github.com/user-attachments/assets/98c00f2d-23c1-4fbd-a16f-d132505d2649)
 
-8. Edit Alamat Mahasiswa
-![Edit Alamat Mahasiswa](https://github.com/user-attachments/assets/0292916b-f53b-4801-af95-7f1a3af27540)
+7.Edit Nama, jenis kelamin, Alamat, Kelas, Angkatan
+![Edit Nama, jenis kelamin, Alamat, Kelas, Angkatan](https://github.com/user-attachments/assets/b7ee1467-0640-4795-9e8c-2c7501387834)
 
-9. Edit Jenis Kelamin Mahasiswa
-![Edit JenisKelamin Mahasiswa](https://github.com/user-attachments/assets/11a17182-0918-48fa-a5bc-4ae0168a7fdf)
+8. Hasil Data Mahasiswa Setelah di Edit
+![Hasil Setelah di Edit](https://github.com/user-attachments/assets/9d8a60f0-627e-4921-9764-99bc045392c9)
 
-10. Edit Kelas Mahasiswa
-![Edit Kelas Mahasiswa](https://github.com/user-attachments/assets/317f2235-2c5f-40c8-bd09-089461b75ff7)
-
-11. Edit Angkatan mahasiswa
-![Edit Angkatan Mahasiswa](https://github.com/user-attachments/assets/20ed09df-0151-41dd-ad75-4013e08aa711)
-
-12. Hasil Data Mahasiswa Setelah di Edit
-![Hasil Data Mahasiswa Setelah di Edit](https://github.com/user-attachments/assets/424dcbc9-f3d6-402c-bd5d-901b69bb3d8c)
