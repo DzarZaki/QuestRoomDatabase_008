@@ -2,8 +2,10 @@ package com.example.pertemuan9.ui.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.pertemuan9.repository.RepositoryMhs
 import com.example.pertemuan9.ui.navigation.DestinasiDetail
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
@@ -32,4 +34,9 @@ class DetailMhsviewModel(
                 )
             )
         }
+        .StateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(2000),
+                isLoading =true,
+        ),
 }
