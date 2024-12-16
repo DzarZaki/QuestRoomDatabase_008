@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 
 class DetailMhsviewModel(
     savedStateHandle: SavedStateHandle,
@@ -35,7 +36,7 @@ class DetailMhsviewModel(
                 )
             )
         }
-        .StateIn(
+        .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(2000),
                 isLoading =true,
