@@ -11,6 +11,8 @@ class localrepositoryMhs(
     override suspend fun inserths(mahasiswa: Mahasiswa) {
         mahasiswaDao.insertMahasiswa(mahasiswa)
 
-        fun getAllMhs (): Flow<List<Mahasiswa>>
+        fun getAllMhs(: Flow<List<Mahasiswa>>)
+
+        fun getMhs(nim : String) : Flow<Mahasiswa>
     }
 }
