@@ -43,9 +43,9 @@ class DetailMhsviewModel(
 }
 
 fun deleteMhs() {
-    detailUiState.value.detailUiEvent.toMahasiswaEntity().let {
+    DetailUiState.value.detailUiEvent.toMahasiswaEntity().let {
         viewModelScope.launch {
-            repositoryMhs.deleteMhs(it)
+            RepositoryMhs.deleteMhs(it)
         }
     }
 }
