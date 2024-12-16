@@ -3,6 +3,7 @@ package com.example.pertemuan9.ui.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.pertemuan9.data.entity.Mahasiswa
 import com.example.pertemuan9.repository.RepositoryMhs
 import com.example.pertemuan9.ui.navigation.DestinasiDetail
 import kotlinx.coroutines.flow.SharingStarted
@@ -61,4 +62,15 @@ data class DetailUiState(
     val isUiEventNotEmpty: Boolean
         get() = detailUiEvent != MahasiswaEvent()
 
+}
+
+fun Mahasiswa.toDetailUiEvent(): MahasiswaEvent {
+    return MahasiswaEvent(
+        nim = nim,
+        nama = nama,
+        jeniskelamin = jeniskelamin,
+        alamat = alamat,
+        kelas = kelas,
+        angkatan = angkatan
+    )
 }
